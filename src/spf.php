@@ -1,6 +1,9 @@
 <?php
   require_once "simple_html_dom.php";
   
+  /**
+  * @class SPFTemplate
+  **/
   class SPFTemplate {
     public function render($content) {
       
@@ -39,6 +42,9 @@
     }
   }
   
+  /**
+  * @class SPFPage
+  **/
   class SPFPage {
     private $title = null;
     
@@ -55,6 +61,12 @@
       $this->elements[$id] = $element;
     }
     
+    /**
+    * Creating a SPF response.
+    *
+    * @method createSPFResponse
+    * @return {Object} Returns the SPF response.
+    **/
     public function createSPFResponse() {
       $response = array();
       
@@ -101,6 +113,9 @@
     }
   }
   
+  /**
+  * @class SPF
+  **/
   class SPF {
     private static $multipart_begin = "[\r\n";
     private static $multipart_delim = ",\r\n";
