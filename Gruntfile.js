@@ -19,5 +19,6 @@ module.exports = function(grunt) {
     grunt.file.write("./build/spf.php", content);
   }
   
+  grunt.registerTask("default", "Build the php file.", buildFile);
   grunt.registerTask("build", "Build the php file.", buildFile);
 };
