@@ -1,2 +1,3 @@
 #external libraries
-/vendor
+/build
+/node_modules

@@ -1,0 +1,15 @@
+{
+  "name": "spfphp",
+  "version": "1.0.0",
+  "description": "A library in PHP to serve SPF pages.",
+  "main": "spf.js",
+  "author": "Jeppe Rune Mortensen <jepperm@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/YePpHa/spfphp"
+  },
+  "devDependencies": {
+    "grunt": "^0.4.5"
+  }
+}

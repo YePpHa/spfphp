@@ -4,7 +4,7 @@ This library is designed to make it easier to make your website use [spfjs](http
 
 Dependent Libraries
 -------------------
- * [PHP Simple HTML DOM Parser](http://simplehtmldom.sourceforge.net/) - spfphp will require the library until I think of something else.
+ * Nothing
 
 Server Requirements
 -------------------

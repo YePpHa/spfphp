@@ -17,7 +17,7 @@ $element = new SPFElement();
 $element->setAttribute("class", "my-element");
 
 // Change the content of the element
-$element->setHTML("This is my very own page");
+$element->setHTML("This is my very own page #2");
 
 // Add the element to the page
 $page->setElement("content", $element);
