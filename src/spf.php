@@ -69,7 +69,7 @@ class SPF {
   **/
   private function renderSPF($page) {
     self::setJSONHeader();
-    $response = $page->createSPFResponse();
+    $response = $page->createSPFResponse($this->template);
     
     return json_encode($response);
   }
@@ -183,6 +183,7 @@ class SPF {
   * @param {String} url The url of the new page.
   **/
   public static function redirect($url) {
+    ob_end_clean();
     if (self::isSPFRequest()) {
       self::setJSONHeader();
       $response = array(

@@ -64,7 +64,11 @@ class SPFPage {
   * @return {SPFElement} Returns the element with the given ID.
   **/
   public function getElementById($id) {
-    return $this->elements[$id];
+    if (isset($this->elements[$id])) {
+      return $this->elements[$id];
+    } else {
+      return null;
+    }
   }
   
   /**
@@ -91,9 +95,10 @@ class SPFPage {
   * Creating a SPF response.
   *
   * @method createSPFResponse
+  * @param {SPFTemplate} The SPF template.
   * @return {Object} Returns the SPF response.
   **/
-  public function createSPFResponse() {
+  public function createSPFResponse($template) {
     $response = array();
     
     // Stylesheet
@@ -113,6 +118,13 @@ class SPFPage {
     
     // Attributes
     $attr = array();
+    $tmpElements = $template->getElements();
+    foreach ($tmpElements as $id => $element) {
+      $attributes = $element->getAttributes();
+      if (count($attributes) > 0) {
+        $attr[$id] = $attributes;
+      }
+    }
     foreach ($this->elements as $id => $element) {
       $attributes = $element->getAttributes();
       if (count($attributes) > 0) {
@@ -125,6 +137,12 @@ class SPFPage {
     
     // Body content
     $body = array();
+    foreach ($tmpElements as $id => $element) {
+      $html = $element->getHTML();
+      if ($html !== null) {
+        $body[$id] = $html;
+      }
+    }
     foreach ($this->elements as $id => $element) {
       $html = $element->getHTML();
       if ($html !== null) {

@@ -22,6 +22,51 @@ class SPFTemplate {
   private $flags = array();
   
   /**
+  * The elements on the page.
+  *
+  * @private
+  * @property elements
+  * @type SPFElement[]
+  **/
+  private $elements = array();
+  
+  /**
+  * Add an element to the page.
+  *
+  * @method setElement
+  * @param {String} id The ID of the element.
+  * @param {SPFElement} element The element instance.
+  **/
+  public function setElement($id, $element) {
+    $this->elements[$id] = $element;
+  }
+  
+  /**
+  * Get an element by its ID
+  *
+  * @method getElementById
+  * @param {String} id The ID of the element.
+  * @return {SPFElement} Returns the element with the given ID.
+  **/
+  public function getElementById($id) {
+    if (isset($this->elements[$id])) {
+      return $this->elements[$id];
+    } else {
+      return null;
+    }
+  }
+  
+  /**
+  * Get every element from template.
+  *
+  * @method getElements
+  * @return {SPFElement[]} Returns elements.
+  **/
+  public function getElements() {
+    return $this->elements;
+  }
+  
+  /**
   * Start the template by outputting HTML (print or echo).
   *
   * @method start
@@ -42,7 +87,8 @@ class SPFTemplate {
   **/
   public function insertFlag($flag) {
     $html = ob_get_contents();
-    ob_clean();
+    ob_end_clean();
+    ob_start();
     
     array_push($this->html, $html);
     array_push($this->flags, $flag);
@@ -122,6 +168,10 @@ class SPFTemplate {
     } else if (self::startsWith($flag, self::$htmlFlag)) {
       $id = substr($flag, strlen(self::$htmlFlag));
       $element = $page->getElementById($id);
+      
+      if ($element === null) {
+        $element = $this->getElementById($id);
+      }
       
       $html = $element->getHTML();
       if ($html !== null) {

@@ -82,7 +82,11 @@ class SPFElement {
   * @return {String} Returns the value of the attribute.
   **/
   public function getAttribute($key) {
-    return $this->attributes[$key];
+    if (isset($this->attributes[$key])) {
+      return $this->attributes[$key];
+    } else {
+      return "";
+    }
   }
   
   /**
