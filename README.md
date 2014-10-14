@@ -8,7 +8,7 @@ Dependent Libraries
 
 Server Requirements
 -------------------
- * PHP +5.3.0 (probably still usable with older version)
+ * PHP +5.3.0 (probably still usable with older versions)
 
 Implementation
 --------------

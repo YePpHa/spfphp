@@ -1,6 +1,10 @@
 <?php
 
+// Create a template
 $template = new SPFTemplate();
+
+// Create an instance of SPF
+$spf = new SPF($template);
 
 $template->start();
 

@@ -22,9 +22,6 @@ $element->setHTML("This is my very own page");
 // Add the element to the page
 $page->setElement("content", $element);
 
-// Create an instance of SPF
-$spf = new SPF($template);
-
 // Render the page
 $spf->render($page);
 

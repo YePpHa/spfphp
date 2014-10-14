@@ -12,30 +12,56 @@ class SPF {
   
   private $chunkedFunctions = array();
   
+  /**
+  * @constructor
+  * @param {SPFTemplate} template The template that the rendering will use.
+  **/
   function __construct($template) {
     $this->template = $template;
   }
   
-  private function renderSPF($content) {
+  /**
+  * Render the SPF response in a JSON string.
+  *
+  * @private
+  * @method renderSPF
+  * @param {SPFPage} page The page that the SPF response should be generated from.
+  * @return {String} Returns a JSON string which is the SPF response.
+  **/
+  private function renderSPF($page) {
     self::setJSONHeader();
-    $response = $content->createSPFResponse();
+    $response = $page->createSPFResponse();
     
     return json_encode($response);
   }
   
-  private function renderHTML($content) {
-    return $this->template->render($content);
+  /**
+  * Render the page as HTML.
+  *
+  * @private
+  * @method renderHTML
+  * @param {SPFPage} page The page that will be rendered.
+  * @return {String} Returns the rendered HTML.
+  **/
+  private function renderHTML($page) {
+    return $this->template->render($page);
   }
   
-  public function render($content) {
+  /**
+  * Render the page as requested and output it.
+  *
+  * @method render
+  * @param {SPFPage} page The oage that will be rendered.
+  **/
+  public function render($page) {
     if (self::isSPFRequest()) {
-      echo $this->renderSPF($content);
+      echo $this->renderSPF($page);
     } else {
-      echo $this->renderHTML($content);
+      echo $this->renderHTML($page);
     }
   }
   
-  private function renderChunkedSPF($content) {
+  private function renderChunkedSPF($page) {
     self::setSPFChunkedHeader();
     self::setJSONHeader();
     self::setSPFMultipartHeader();
@@ -49,13 +75,13 @@ class SPF {
       }
       if (is_string($this->chunkedFunctions[$i])) {
         if (function_exists($this->chunkedFunctions[$i])) {
-          echo call_user_func($this->chunkedFunctions[$i], $content);
+          echo call_user_func($this->chunkedFunctions[$i], $page);
         } else {
           throw new Exception("Function " . $this->chunkedFunctions[$i] . " is not an existing function!");
         }
       } else {
         /* PHP 5.3.0 */
-        echo $this->chunkedFunctions[$i]($content);
+        echo $this->chunkedFunctions[$i]($page);
       }
       
       // Flush
@@ -66,17 +92,17 @@ class SPF {
     echo $this->multipart_end;
   }
   
-  private function renderChunkedHTML($content) {
+  private function renderChunkedHTML($page) {
     $this->setSPFChunkedHeader();
     
-    echo $this->template->render($content);
+    echo $this->template->render($page);
   }
   
-  public function renderChunked($content) {
+  public function renderChunked($page) {
     if (self::isSPFRequest()) {
-      $this->renderChunkedSPF($content);
+      $this->renderChunkedSPF($page);
     } else {
-      $this->renderChunkedHTML($content);
+      $this->renderChunkedHTML($page);
     }
   }
   
