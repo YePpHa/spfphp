@@ -4,12 +4,51 @@
 * @class SPF
 **/
 class SPF {
+  /**
+  * Used to correctly format the multipart SPF response.
+  *
+  * @private
+  * @static
+  * @property multipart_begin
+  * @type String
+  **/
   private static $multipart_begin = "[\r\n";
+  /**
+  * Used to correctly format the multipart SPF response.
+  *
+  * @private
+  * @static
+  * @property multipart_delim
+  * @type String
+  **/
   private static $multipart_delim = ",\r\n";
+  /**
+  * Used to correctly format the multipart SPF response.
+  *
+  * @private
+  * @static
+  * @property multipart_end
+  * @type String
+  **/
   private static $multipart_end = "]\r\n";
   
+  /**
+  * The template that will be used to render the page.
+  *
+  * @private
+  * @property template
+  * @type SPFTemplate
+  **/
   private $template;
   
+  /**
+  * The chunked functions that will be called when the chunked page needs to be rendered.
+  * These functions will then return their chunk in either HTML or a SPF response.
+  *
+  * @private
+  * @property chunkedFunctions
+  * @type Array
+  **/
   private $chunkedFunctions = array();
   
   /**
@@ -61,6 +100,13 @@ class SPF {
     }
   }
   
+  /**
+  * Render the chunked SPF responses and send them each when they are ready.
+  *
+  * @private
+  * @method renderChunkedSPF
+  * @param {SPFPage} page The page that will be rendered
+  **/
   private function renderChunkedSPF($page) {
     self::setSPFChunkedHeader();
     self::setJSONHeader();
@@ -92,12 +138,25 @@ class SPF {
     echo $this->multipart_end;
   }
   
+  /**
+  * Render the chunked HTML page.
+  *
+  * @private
+  * @method renderChunkedHTML
+  * @param {SPFPage} page The page that will be rendered.
+  **/
   private function renderChunkedHTML($page) {
     $this->setSPFChunkedHeader();
     
     echo $this->template->render($page);
   }
   
+  /**
+  * Render the chunked page.
+  *
+  * @method renderChunked
+  * @param {SPFPage} page The page that will be rendered.
+  **/
   public function renderChunked($page) {
     if (self::isSPFRequest()) {
       $this->renderChunkedSPF($page);
@@ -106,10 +165,23 @@ class SPF {
     }
   }
   
+  /**
+  * Add a function to the queue that will be called when the page is rendered
+  *
+  * @method addChunkedFunction
+  * @param {String|Function} func The function that will be called.
+  **/
   public function addChunkedFunction($func) {
     array_push($this->chunkedFunctions, $func);
   }
   
+  /**
+  * Redirect the page to another page.
+  *
+  * @static
+  * @method redirect
+  * @param {String} url The url of the new page.
+  **/
   public static function redirect($url) {
     if (self::isSPFRequest()) {
       self::setJSONHeader();
@@ -123,6 +195,14 @@ class SPF {
     exit;
   }
   
+  /**
+  * Get the referer.
+  *
+  * @private
+  * @static
+  * @method getReferer
+  * @return {String} Returns the referer.
+  **/
   private static function getReferer() {
     $headers = self::parseRequestHeader();
     
@@ -134,23 +214,60 @@ class SPF {
     return $referer;
   }
   
+  /**
+  * Checking if the client has requested the page as SPF.
+  *
+  * @private
+  * @static
+  * @method isSPFRequest
+  * @return {Boolean} Returns true if the client requested SPF or false if not.
+  **/
   private static function isSPFRequest() {
     $headers = self::parseRequestHeader();
     return (isset($_GET["spf"]) || isset($headers["HTTP_X_SPF_REQUEST"]));
   }
   
+  /**
+  * Set the content type of the page to JSON.
+  *
+  * @private
+  * @static
+  * @method setJSONHeader
+  **/
   private static function setJSONHeader() {
     header("Content-Type: application/javascript");
   }
   
+  /**
+  * Set the SPF response type to multipart.
+  *
+  * @private
+  * @static
+  * @method setSPFMultipartHeader
+  **/
   private static function setSPFMultipartHeader() {
     header("X-SPF-Response-Type: multipart");
   }
   
+  /**
+  * Set the transfer encoding to chunked.
+  *
+  * @private
+  * @static
+  * @method setSPFChunkedHeader
+  **/
   private static function setSPFChunkedHeader() {
     header("Transfer-Encoding: chunked");
   }
   
+  /**
+  * Parse the header of the client request.
+  *
+  * @private
+  * @static
+  * @method parseRequestHeader
+  * @return {Object} Returns key, value pairs where the key is the name of the header entry and the value is the value of said header entry.
+  **/
   private static function parseRequestHeader() {
     $headers = array();
     foreach($_SERVER as $key => $value) {
