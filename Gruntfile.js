@@ -4,8 +4,9 @@ module.exports = function(grunt) {
     var phpEnd = "?>";
     var linebreak = "\r\n";
     var content = "";
+    var license = "/**" + linebreak + grunt.file.read("./LICENSE") + linebreak + "**/";
     
-    content += phpStart + linebreak + linebreak;
+    content += phpStart + linebreak + linebreak + license + linebreak + linebreak;
     
     grunt.file.recurse("./src/", function(abspath, rootdir, subdir, filename){
       var file = grunt.file.read(abspath);

@@ -8,13 +8,13 @@ require_once "template.php";
 $page = new SPFPage();
 
 // Give the page a title
-$page->setTitle("My SPF page");
+$page->setTitle("Page 2 of awesomeness");
 
 // Add an element
 $element = new SPFElement();
 
 // Give said element an attribute
-$element->setAttribute("class", "my-element");
+$element->setAttribute("class", "my-element-2");
 
 // Change the content of the element
 $element->setHTML("This is my very own page #2");
