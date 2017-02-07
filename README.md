@@ -1,4 +1,6 @@
 # SPF for PHP
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/YePpHa/spfphp.svg)](https://greenkeeper.io/)
 SPFPHP is a library designed to make it easy and intuitive to implement
 [spfjs](https://github.com/youtube/spfjs/) for your own server using php.
 It handles everything related to SPF on the server and it makes sure that
